@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marlowe Bay — Neon Tide (Screenshot-First Starter Kit)</title>
+<style>
+  @font-face { font-family: 'Bebas Neue'; src: url('./vendor/fonts/bebas-neue.woff2') format('woff2'); font-display: swap; }
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #14100c; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  #game { display: block; width: 1280px; height: 800px; }
+  .panel { position: fixed; z-index: 5; background: rgba(12,16,24,.88); border: 2px solid rgba(255,209,102,.55); border-radius: 10px; color: #fff; padding: 8px 10px; box-sizing: border-box; }
+  .ph { font-size: 13px; font-weight: 900; letter-spacing: .12em; color: #ffd166; white-space: nowrap; }
+  #mission { left: 12px; top: 12px; width: 310px; }
+  #mission .ptitle { font-size: 16px; font-weight: 800; margin: 2px 0; white-space: nowrap; overflow: hidden; }
+  .stagebar { height: 9px; background: rgba(255,255,255,.2); border-radius: 5px; overflow: hidden; }
+  .stagefill { height: 100%; width: 75%; background: #ffd166; }
+  .stage { font-size: 12px; font-weight: 700; color: #ffe0b2; margin-top: 2px; }
+  .obj, .next { font-size: 13px; line-height: 1.3; }
+  .next { color: #81d4fa; font-weight: 700; }
+  #economy { right: 12px; top: 12px; width: 310px; text-align: right; }
+  #economy .cash { font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: .04em; color: #ffd166; line-height: 1.15; padding: 2px 0; }
+  #economy .clock, #economy .rank { font-size: 13px; font-weight: 700; }
+  #economy .stars { font-size: 14px; font-weight: 900; color: #ff8a80; margin-top: 2px; }
+  #economy .air { font-size: 12px; font-weight: 900; color: #81d4fa; }
+  #dispatch { right: 12px; top: 168px; width: 310px; }
+  .drow { display: flex; gap: 8px; font-size: 13px; font-weight: 700; padding: 2px 0; border-top: 1px solid rgba(255,255,255,.12); white-space: nowrap; }
+  .drow .du { width: 108px; color: #ffe0b2; } .drow .dt { width: 64px; color: #81d4fa; } .drow .dd { margin-left: auto; color: #ffd166; }
+  #minimap-panel { left: 12px; bottom: 12px; width: 310px; display: flex; gap: 10px; }
+  #minimap-panel .mapinfo { font-size: 13px; font-weight: 700; line-height: 1.35; }
+  #minimap-panel .district { font-size: 15px; color: #ffd166; }
+  #minimap-panel .vitals { color: #a5d6a7; font-size: 14px; }
+  #drive { right: 12px; bottom: 12px; width: 310px; }
+  #drive .veh { font-size: 15px; font-weight: 900; color: #ffd166; white-space: nowrap; }
+  #drive .weapon { font-size: 13px; font-weight: 700; margin-top: 2px; }
+  #drive .slots { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; }
+  #drive .slot { font-size: 11px; font-weight: 700; background: rgba(255,255,255,.12); border-radius: 4px; padding: 2px 5px; white-space: nowrap; }
+  #drive .slot.active { background: #ffd166; color: #111; }
+  #drive .crewchip { font-size: 11px; font-weight: 700; display: inline-block; margin: 1px 4px 1px 0; white-space: nowrap; }
+  #drive .radio { font-size: 12px; color: #81d4fa; font-weight: 700; margin-top: 3px; line-height: 1.3; }
+  #dialogue { left: 50%; transform: translateX(-50%); bottom: 12px; width: 400px; font-size: 13px; line-height: 1.35; }
+  #dialogue b { color: #ffd166; }
+  #toast { left: 50%; transform: translateX(-50%); top: 12px; width: 380px; text-align: center; font-size: 15px; font-weight: 900; color: #a5d6a7; border-color: #66bb6a; }
+  #enemy-bars { left: 12px; top: 196px; width: 310px; }
+  .ebar { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; margin-top: 4px; }
+  .ebar-track { flex: 1; height: 8px; background: rgba(255,255,255,.2); border-radius: 4px; overflow: hidden; }
+  .ebar-track div { height: 100%; background: #e53935; }
+  /* Title + proof screens */
+  .screen { position: fixed; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center; color: #fff; }
+  #title-screen { background: linear-gradient(180deg, rgba(20,8,20,.55), rgba(10,10,30,.82)); }
+  .title-inner { text-align: center; width: 860px; }
+  .gametitle { font-family: 'Bebas Neue', sans-serif; font-size: 96px; letter-spacing: .06em; line-height: 1.08; padding: 4px 0; color: #ffd166; text-shadow: 0 4px 0 rgba(0,0,0,.5); }
+  .subtitle { font-size: 16px; font-weight: 700; color: #ffe0b2; margin: 6px 0 18px; }
+  .menu { display: flex; flex-direction: column; gap: 8px; align-items: center; margin-bottom: 16px; }
+  .menu-btn { width: 340px; padding: 9px; font-size: 15px; font-weight: 900; letter-spacing: .08em; background: rgba(255,255,255,.1); color: #fff; border: 2px solid rgba(255,255,255,.4); border-radius: 8px; cursor: pointer; }
+  .menu-btn.primary { background: #ffd166; color: #111; border-color: #ffd166; }
+  .saves { display: flex; gap: 10px; justify-content: center; margin-bottom: 14px; }
+  .save { background: rgba(12,16,24,.9); border: 2px solid rgba(255,209,102,.55); border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 700; text-align: left; line-height: 1.5; }
+  .save b { display: block; color: #ffd166; font-size: 13px; }
+  .save span { display: block; white-space: nowrap; }
+  .howto { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .howto span { font-size: 12px; font-weight: 700; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: 5px 12px; white-space: nowrap; }
+  #proof-screen { background: rgba(8,12,20,.96); overflow: auto; }
+  .proof-inner { width: 1220px; padding: 14px; box-sizing: border-box; }
+  .proof-head { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: .05em; color: #ffd166; }
+  .proof-head .proof-cash { float: right; font-size: 24px; }
+  .countbanner { display: flex; gap: 10px; margin: 10px 0; }
+  .count { flex: 1; background: rgba(255,209,102,.12); border: 2px solid #ffd166; border-radius: 10px; text-align: center; padding: 8px 4px; }
+  .count b { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 1; color: #ffd166; }
+  .count span { font-size: 12px; font-weight: 900; letter-spacing: .08em; }
+  .proof-cols { display: flex; gap: 12px; }
+  .proof-map, .proof-missions, .proof-stats { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.25); border-radius: 10px; padding: 10px; box-sizing: border-box; }
+  .proof-map { width: 410px; } .proof-missions { flex: 1; } .proof-stats { width: 300px; }
+  .legend { font-size: 11px; font-weight: 700; margin-top: 6px; line-height: 1.7; }
+  .legend span { margin-right: 8px; }
+  .mrow { display: flex; gap: 8px; font-size: 13px; font-weight: 700; padding: 3px 0; border-top: 1px solid rgba(255,255,255,.12); white-space: nowrap; }
+  .mrow .mstate { width: 74px; } .mrow.done .mstate { color: #a5d6a7; } .mrow.current .mstate { color: #ffd166; } .mrow.locked .mstate { color: #888; }
+  .mrow .mch { margin-left: auto; color: #81d4fa; font-size: 11px; }
+  .mrow.more { color: #aaa; }
+  .stat { text-align: center; margin: 6px 0; } .stat b { font-family: 'Bebas Neue', sans-serif; font-size: 44px; color: #ffd166; display: block; line-height: 1; }
+  .stat span { font-size: 12px; font-weight: 900; }
+  .statline { font-size: 13px; font-weight: 700; padding: 2px 0; border-top: 1px solid rgba(255,255,255,.12); }
+  .proof-stats .save { margin-top: 6px; }
+</style>
+</head>
+<body>
+<canvas id="game" width="1280" height="800"></canvas>
+<div id="hud"></div>
+<div class="screen" id="title-screen"></div>
+<div class="screen" id="proof-screen"></div>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

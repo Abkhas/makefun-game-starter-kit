@@ -1,0 +1,106 @@
+{
+  "shots": [
+    {
+      "cash": 52840,
+      "mission": "7/24",
+      "slot1": 58,
+      "slot1cash": 52840
+    },
+    {
+      "cash": 52840,
+      "mission": "7/24",
+      "slot1": 58,
+      "slot1cash": 52840
+    },
+    {
+      "cash": 52840,
+      "mission": "7/24",
+      "slot1": 58,
+      "slot1cash": 52840
+    },
+    {
+      "cash": 52840,
+      "mission": "7/24",
+      "slot1": 58,
+      "slot1cash": 52840
+    }
+  ],
+  "checks": {
+    "boot: game object + first frames rendered": {
+      "pass": true,
+      "detail": "frames=13"
+    },
+    "boot: display font loaded": {
+      "pass": true,
+      "detail": ""
+    },
+    "play: car drives (W accelerates)": {
+      "pass": true,
+      "detail": "speed=56 km/h"
+    },
+    "legibility: cover (no overflow / overlap / out-of-frame)": {
+      "pass": true,
+      "detail": "[]"
+    },
+    "idle: walk cycle stops when standing still": {
+      "pass": true,
+      "detail": "{\"moving\":false,\"legL\":0,\"legR\":0,\"armL\":0}"
+    },
+    "idle: character has legs + shoes": {
+      "pass": true,
+      "detail": ""
+    },
+    "legibility: night shot": {
+      "pass": true,
+      "detail": "[]"
+    },
+    "legibility: proof screen": {
+      "pass": true,
+      "detail": "[]"
+    },
+    "proof: count banner shows 6 totals": {
+      "pass": true,
+      "detail": "24,87,42,14,7,12"
+    },
+    "legibility: title screen": {
+      "pass": true,
+      "detail": "[]"
+    },
+    "title: Continue points at latest save": {
+      "pass": true,
+      "detail": ""
+    },
+    "consistency: cash / mission / Slot-1 % identical in all 4 shots": {
+      "pass": true,
+      "detail": "[{\"cash\":52840,\"mission\":\"7/24\",\"slot1\":58,\"slot1cash\":52840},{\"cash\":52840,\"mission\":\"7/24\",\"slot1\":58,\"slot1cash\":52840},{\"cash\":52840,\"mission\":\"7/24\",\"slot1\":58,\"slot1cash\":52840},{\"cash\":52840,\"mission\":\"7/24\",\"slot1\":58,\"slot1cash\":52840}]"
+    },
+    "zero console errors": {
+      "pass": true,
+      "detail": ""
+    },
+    "zero failed network requests": {
+      "pass": true,
+      "detail": ""
+    },
+    "file: 0-cover.jpg exists (117 KB)": {
+      "pass": true,
+      "detail": "119684 bytes"
+    },
+    "file: 1-night.jpg exists (113 KB)": {
+      "pass": true,
+      "detail": "115324 bytes"
+    },
+    "file: 2-proof.jpg exists (153 KB)": {
+      "pass": true,
+      "detail": "156811 bytes"
+    },
+    "file: 3-title.jpg exists (79 KB)": {
+      "pass": true,
+      "detail": "80927 bytes"
+    },
+    "contact sheet built": {
+      "pass": true,
+      "detail": ""
+    }
+  }
+}
